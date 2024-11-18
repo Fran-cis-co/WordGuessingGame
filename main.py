@@ -1,7 +1,8 @@
-import database.words as words
-import utility.randomWordFromArray as randomize
+import guesingGame
 
-# Variable to store the database to use in the main file
-database = words.getWords()
+# Call function from guessing game file to begin the game
+def main():
+    guesingGame.beginGame()
 
-print(randomize.getRandomWord(database))
+if __name__ == "__main__":
+    main()
