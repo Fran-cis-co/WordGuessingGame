@@ -1,9 +1,28 @@
+
 # Python file which begins the guessing game
 import database.words as words
-import utility.randomWordFromArray as randomize
+from utility.randomWordFromArray import getRandomWord
+from utility.checkIfDigit import isDigit
+
+# Array which will contain all the correct guesses
+correctGuesses = []
+
+def inputCorrectGuess(guess, word):
+    print()
+
+# Function which checks if the user's guessed letter is in the word
+def checkGuess(guess, word):
+    if guess in word:
+        print("Correct! \n")
+        # Call function which inputs the correct guess in a array that way we can determine if the user has already guess that letter
+        inputCorrectGuess(guess, word)
+        return True
+    else:
+        print("Wrong Answer! Please try again. \n")
+        return False
 
 # Function to determine if the game should end or not depending on the amount of guesses the user has left
-def checkGuesses(numOfGuesses):
+def checkNumOfGuesses(numOfGuesses):
     if numOfGuesses == 0:
         print("You ran out of tries! Exiting game.")
         return True
@@ -12,7 +31,7 @@ def checkGuesses(numOfGuesses):
 
 def startTheGuessing():
     # Variable which calls the database file, then calls the utility file which picks a random word from the database
-    randomWord = randomize.getRandomWord(words.getWords())
+    randomWord = getRandomWord(words.getWords())
     numOfGuesses = len(randomWord) + 2 # Number of guesses = length of word + 2
 
     # Let player know how many letters their word has
@@ -22,16 +41,20 @@ def startTheGuessing():
     while(True):
         print("You have", numOfGuesses, "left \n")
         # One of the ways the game will end is if the user runs out of guesses   
-        if checkGuesses(numOfGuesses):
+        if checkNumOfGuesses(numOfGuesses):
             break
         
-
         # Grab the input from the user and then determine if it is a correct guess
-        characterGuess = input("Please Input your guess: ")
-        if characterGuess.isdigit():
-            print("Input must be a character")
+        characterGuess = input("Please Input your guess: \n")
+        if isDigit(characterGuess):
             continue
-    
+        
+        if checkGuess(characterGuess, randomWord):
+            print("You guess correctly")
+        else:
+            print("You did not guess correctly")
+            numOfGuesses -= 1
+ 
 def beginGame():
     # Keep in while loop to keep the game going until user decides to quit
     while(True):
