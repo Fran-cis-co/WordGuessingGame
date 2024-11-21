@@ -1,14 +1,18 @@
+# TO-DO: IMPLEMENT CODE TO STORE CORRECT GUESS IN ARRAY
 
 # Python file which begins the guessing game
 import database.words as words
+from database.correctGuesses import guesses
 from utility.randomWordFromArray import getRandomWord
 from utility.checkIfDigit import isDigit
 
-# Array which will contain all the correct guesses
-correctGuesses = []
-
+'''
+Function which inputs the correct guess
+If the word contains multiple of the same letter, it will add those additional ones as well 
+'''
 def inputCorrectGuess(guess, word):
-    print()
+    for x in range(word.count(guess)):
+        guesses.append(guess)
 
 # Function which checks if the user's guessed letter is in the word
 def checkGuess(guess, word):
@@ -35,11 +39,15 @@ def startTheGuessing():
     numOfGuesses = len(randomWord) + 2 # Number of guesses = length of word + 2
 
     # Let player know how many letters their word has
-    print("Your word is", numOfGuesses, "letters long.")
+    print("Your word is", len(randomWord), "letters long.")
 
     # We put the game in a while loop that way we can have the player always inputting their guesses
     while(True):
-        print("You have", numOfGuesses, "left \n")
+        if len(guesses) == len(randomWord):
+            print("You guessed the entire word, you win! Thank you for playing! \n")
+            break
+
+        print("You have", numOfGuesses, "guesses left \n")
         # One of the ways the game will end is if the user runs out of guesses   
         if checkNumOfGuesses(numOfGuesses):
             break
@@ -50,7 +58,8 @@ def startTheGuessing():
             continue
         
         if checkGuess(characterGuess, randomWord):
-            print("You guess correctly")
+            print("You guess correctly! \n")
+            print("You have", len(randomWord) - len(guesses), "letters left to guess! \n")      
         else:
             print("You did not guess correctly")
             numOfGuesses -= 1
